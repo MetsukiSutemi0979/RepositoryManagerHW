@@ -4,9 +4,17 @@ import ru.netology.domain.FilmsInPlaybill;
 
 public class PlaybillManager {
     private FilmsInPlaybill[] films = new FilmsInPlaybill[0];
+    private int limit;
 
+    public PlaybillManager(int limit) {
+        this.limit = limit;
+    }
 
-    public void add (FilmsInPlaybill film) {
+    public PlaybillManager() {
+        this(5);
+    }
+
+    public void add(FilmsInPlaybill film) {
         FilmsInPlaybill[] tmp = new FilmsInPlaybill[films.length + 1];
         for (int i = 0; i < films.length; i++) {
             tmp[i] = films[i];
@@ -16,14 +24,16 @@ public class PlaybillManager {
     }
 
     public FilmsInPlaybill[] getFilms() {
+
         return films;
     }
 
-    public FilmsInPlaybill[] findAll () {
+    public FilmsInPlaybill[] findAll() {
+
         return films;
     }
 
-    public  FilmsInPlaybill[] findByLast (int limit) {
+    public FilmsInPlaybill[] findLast() {
         int resultLength;
 
         if (films.length < limit) {
@@ -40,4 +50,6 @@ public class PlaybillManager {
 
         return result;
     }
+
+
 }

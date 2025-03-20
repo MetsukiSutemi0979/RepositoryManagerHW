@@ -1,7 +1,10 @@
 package ru.netology.repository;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.FilmsInPlaybill;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlaybillManagerTest {
 
@@ -41,20 +44,20 @@ public class PlaybillManagerTest {
         repo.add(film5);
         repo.add(film6);
         repo.add(film7);
-        repo.findAll();
+        FilmsInPlaybill[] all = repo.findAll();
 
 
         FilmsInPlaybill[] expected = {film1, film2, film3, film4, film5, film6, film7};
-        FilmsInPlaybill[] actual = repo.findAll();
+        FilmsInPlaybill[] actual = all;
 
         Assertions.assertArrayEquals(expected, actual);
-        Assertions.assertEquals("Бладшот", actual[0].getFilmName());
-        Assertions.assertEquals("Вперёд",actual[1].getFilmName());
-        Assertions.assertEquals("Отель 'Белград'", actual[2].getFilmName());
-        Assertions.assertEquals("Джентельмены", actual[3].getFilmName());
-        Assertions.assertEquals("Человек-невидимка", actual[4].getFilmName());
-        Assertions.assertEquals("Тролли. Мировой тур", actual[5].getFilmName());
-        Assertions.assertEquals("Номер один", actual[6].getFilmName());
+        assertEquals("Бладшот", actual[0].getFilmName());
+        assertEquals("Вперёд", actual[1].getFilmName());
+        assertEquals("Отель 'Белград'", actual[2].getFilmName());
+        assertEquals("Джентельмены", actual[3].getFilmName());
+        assertEquals("Человек-невидимка", actual[4].getFilmName());
+        assertEquals("Тролли. Мировой тур", actual[5].getFilmName());
+        assertEquals("Номер один", actual[6].getFilmName());
     }
 
     @Test
@@ -66,16 +69,17 @@ public class PlaybillManagerTest {
         repo.add(film5);
         repo.add(film6);
         repo.add(film7);
-        repo.findByLast(5);
+        repo.findLast();
 
         FilmsInPlaybill[] expected = {film7, film6, film5, film4, film3};
-        FilmsInPlaybill[] actual = repo.findByLast(5);
+        FilmsInPlaybill[] actual = repo.findLast();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void findLastShouldReturnLastAddedFilmsInReverseOrderWithSmallerLimit() {
+        PlaybillManager repo = new PlaybillManager(3);
         repo.add(film1);
         repo.add(film2);
         repo.add(film3);
@@ -83,16 +87,17 @@ public class PlaybillManagerTest {
         repo.add(film5);
         repo.add(film6);
         repo.add(film7);
-        repo.findByLast(3);
+        repo.findLast();
 
         FilmsInPlaybill[] expected = {film7, film6, film5};
-        FilmsInPlaybill[] actual = repo.findByLast(3);
+        FilmsInPlaybill[] actual = repo.findLast();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void findLastShouldReturnLastAddedFilmsInReverseOrderWithLargerLimit() {
+        PlaybillManager repo = new PlaybillManager(7);
         repo.add(film1);
         repo.add(film2);
         repo.add(film3);
@@ -100,11 +105,39 @@ public class PlaybillManagerTest {
         repo.add(film5);
         repo.add(film6);
         repo.add(film7);
-        repo.findByLast(7);
+        repo.findLast();
 
         FilmsInPlaybill[] expected = {film7, film6, film5, film4, film3, film2, film1};
-        FilmsInPlaybill[] actual = repo.findByLast(7);
+        FilmsInPlaybill[] actual = repo.findLast();
 
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+
+    @Test
+    void shouldReturnLastWithDefaultLimit() {
+        PlaybillManager manager = new PlaybillManager();
+        for (int i = 1; i <= 6; i++) {
+            manager.add(new FilmsInPlaybill("Film " + i));
+        }
+
+        FilmsInPlaybill[] last = manager.findLast();
+        assertEquals(5, last.length);
+        assertEquals("Film 6", last[0].getFilmName());
+        assertEquals("Film 5", last[1].getFilmName());
+    }
+
+    @Test
+    void shouldReturnLastWithCustomLimit() {
+        PlaybillManager manager = new PlaybillManager(3);
+        for (int i = 1; i <= 5; i++) {
+            manager.add(new FilmsInPlaybill("Film " + i));
+        }
+
+        FilmsInPlaybill[] last = manager.findLast();
+        assertEquals(3, last.length);
+        assertEquals("Film 5", last[0].getFilmName());
+        assertEquals("Film 4", last[1].getFilmName());
+        assertEquals("Film 3", last[2].getFilmName());
     }
 }

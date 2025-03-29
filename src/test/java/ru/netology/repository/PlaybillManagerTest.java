@@ -116,46 +116,36 @@ public class PlaybillManagerTest {
 
     @Test
     void shouldReturnLastWithDefaultLimit() {
-        PlaybillManager manager = new PlaybillManager();
-        FilmsInPlaybill[] addedFilms = new FilmsInPlaybill[6];
+        PlaybillManager repo = new PlaybillManager(5);
 
-        for (int i = 0; i < 6; i++) {
-            FilmsInPlaybill film = new FilmsInPlaybill("Film " + (i + 1));
-            manager.add(film);
-            addedFilms[i] = film;
-        }
+        repo.add(film1);
+        repo.add(film2);
+        repo.add(film3);
+        repo.add(film4);
+        repo.add(film5);
+        repo.add(film6);
 
-        FilmsInPlaybill[] expected = {
-                addedFilms[5],
-                addedFilms[4],
-                addedFilms[3],
-                addedFilms[2],
-                addedFilms[1]
-        };
+        FilmsInPlaybill[] expected = {film6, film5, film4, film3, film2};
+        FilmsInPlaybill[] actual = repo.findLast();
 
-        FilmsInPlaybill[] actual = manager.findLast();
         assertArrayEquals(expected, actual);
     }
 
     @Test
     void shouldReturnLastWithCustomLimit() {
-        PlaybillManager manager = new PlaybillManager(3);
-        FilmsInPlaybill[] addedFilms = new FilmsInPlaybill[5];
+        PlaybillManager repo = new PlaybillManager(3);
 
-        for (int i = 0; i < 5; i++) {
-            FilmsInPlaybill film = new FilmsInPlaybill("Film " + (i + 1));
-            manager.add(film);
-            addedFilms[i] = film;
-        }
+        repo.add(film1);
+        repo.add(film2);
+        repo.add(film3);
+        repo.add(film4);
+        repo.add(film5);
 
-        FilmsInPlaybill[] expected = {
-                addedFilms[4], 
-                addedFilms[3],
-                addedFilms[2]
-        };
+        FilmsInPlaybill[] expected = {film5, film4, film3};
+        FilmsInPlaybill[] actual = repo.findLast();
 
-        FilmsInPlaybill[] actual = manager.findLast();
         assertArrayEquals(expected, actual);
+
     }
 }
 
